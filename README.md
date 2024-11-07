@@ -96,7 +96,7 @@ Detailed Implementation Steps:
 - Install the required dependencies and libraries (please adjust as needed).
 - Copy the code into the image.
 - Install modules according to `requirements.txt`.
-- Install PyInstaller(using PyInstaller in Docker can avoid issues related to differences in running on a personal computer and Linux), build it into a single file, which will be automatically generated in the /dist folder.
+- Install PyInstaller, build it into a single file, which will be automatically generated in the /dist folder.
 - Use the new image and only copy the executable from the `/dist` folder to reduce the image size.
 
 ### 4. Docker Compose
