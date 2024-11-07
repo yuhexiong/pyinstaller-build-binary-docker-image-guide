@@ -1,5 +1,6 @@
 # PyInstaller Build Binary Docker Image Guide
 
+**(also provided Traditional Chinese version document [README-CH.md](README-CH.md).)**
 
 Adjust code to accommodate both local running and PyInstaller build environments.  
 Building a Docker Image with PyInstaller as a Binary including all required packages and launch it using Docker Compose with mounted configuration files.  
@@ -10,6 +11,32 @@ Building a Docker Image with PyInstaller as a Binary including all required pack
 
 - Language: Python v3.9
 - Tool: PyInstaller v6.11.0
+
+## PyInstaller Introduction
+
+refer to [PyInstaller Official Manual](https://pyinstaller.org/en/stable/)  
+PyInstaller can package Python projects into executable files, making them easier to run on machines without a Python environment.
+
+### Command
+
+basic command to package `main.py` as an executable file:
+```sh
+pyinstaller main.py
+```
+
+### Issues and Solutions
+
+- **Multiple files generated after packaging**  
+   By default, PyInstaller creates a `build` folder in the current directory, containing multiple files. If you want to generate a single executable file, use the `--onefile` option. The executable will then be placed in the `dist` folder.
+
+- **Cross-platform compatibility**  
+   Files generated on Windows are in `.exe` format, which cannot be executed on Linux. To avoid compatibility issues, package the executable directly in the Dockerfile to ensure a consistent environment.
+
+- **Dependency management**  
+   PyInstaller needs to include all required dependencies in the package. You can create a `requirements.txt` file, install it, and use the `--collect-all` option to ensure all necessary packages are included.
+
+- **File path issues**  
+   After packaging, the program runs temporarily in the `/tmp` folder, while external configuration files are mounted in `/app`. Therefore, the directory path must be adjusted based on the execution environment (`/tmp` or `/app`). Use a `BASE_DIR` variable to set the correct directory location.
 
 ## Adjust Code
 
