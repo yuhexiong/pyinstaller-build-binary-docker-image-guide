@@ -36,7 +36,9 @@ pyinstaller main.py
    打包後的程式在運行時，會暫時解壓至 `/tmp` 資料夾，而外部掛載的設定檔掛載於`/app`，因此必須根據執行環境（`/tmp` 或 `/app`）調整路徑`BASE_DIR` 變數來設定正確的目錄位置。
 
 
-## Adjust Code
+## Steps
+
+### 1. Adjust Code
 
 參考 [Stackoverflow 問題](https://stackoverflow.com/questions/70405069/pyinstaller-executable-saves-files-to-temp-folder)  
 
@@ -73,7 +75,7 @@ DATA_DIR = get_data_folder()
 除此之外還要修改程式碼中的資料夾路徑，YAML 路徑使用 `BASE_DIR`，而程式路徑使用 `DATA_DIR`。
 
 
-## Write Down Required Modules
+### 2. Write Down Required Modules
 
 將所需的套件寫入 `requirements.txt`  
 
@@ -82,7 +84,7 @@ DATA_DIR = get_data_folder()
 pip freeze > requirements.txt
 ```
 
-## Dockerfile
+### 3. Dockerfile
 
 參考 [Dockerfile](Dockerfile)  
 
@@ -95,7 +97,7 @@ pip freeze > requirements.txt
 - 安裝 PyInstaller，將其建置成一個檔案，該檔案將自動生成在 /dist 資料夾下。
 - 使用新的 image，只複製 /dist 資料夾中的執行檔，以減少 image 大小。
 
-## Docker Compose
+### 4. Docker Compose
 
 參考 [docker-compose.yml](docker-compose.yml)  
 將設定檔掛載到 `/app` 下  

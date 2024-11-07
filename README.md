@@ -38,7 +38,9 @@ pyinstaller main.py
 - **File path issues**  
    After packaging, the program runs temporarily in the `/tmp` folder, while external configuration files are mounted in `/app`. Therefore, the directory path must be adjusted based on the execution environment (`/tmp` or `/app`). Use a `BASE_DIR` variable to set the correct directory location.
 
-## Adjust Code
+## Steps
+
+### 1. Adjust Code
 
 refer to [Stackoverflow Question](https://stackoverflow.com/questions/70405069/pyinstaller-executable-saves-files-to-temp-folder)  
 
@@ -75,7 +77,7 @@ DATA_DIR = get_data_folder()
 also, modify the folder paths in the code so that the YAML paths use `BASE_DIR` and the program paths use `DATA_DIR`.
 
 
-## Write Down Required Modules
+### 2. Write Down Required Modules
 
 write the required modules into `requirements.txt`  
 
@@ -84,7 +86,7 @@ if using .venv
 pip freeze > requirements.txt
 ```
 
-## Dockerfile
+### 3. Dockerfile
 
 refer to [Dockerfile](Dockerfile)  
 
@@ -97,7 +99,7 @@ Detailed Implementation Steps:
 - Install PyInstaller(using PyInstaller in Docker can avoid issues related to differences in running on a personal computer and Linux), build it into a single file, which will be automatically generated in the /dist folder.
 - Use the new image and only copy the executable from the `/dist` folder to reduce the image size.
 
-## Docker Compose
+### 4. Docker Compose
 
 refer to [docker-compose.yml](docker-compose.yml)  
 mount the configuration files under `/app`  
