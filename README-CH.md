@@ -1,7 +1,6 @@
 # PyInstaller Build Binary Docker Image Guide
 
-修改程式碼以適應本地執行和 PyInstaller 兩個環境。  
-使用 PyInstaller 作為 binary 檔來建立 Docker Image，包括所有所需的套件，並使用 Docker Compose 啟動它，同時掛載設定檔。
+使用 PyInstaller 將專案打包成 binary 檔來建立 Docker Image，包括所有所需的套件，並使用 Docker Compose 啟動它，同時掛載設定檔。
 
 
 ## Overview
@@ -12,13 +11,18 @@
 ## PyInstaller Introduction
 
 參考 [PyInstaller 官方手冊](https://pyinstaller.org/en/stable/)  
-PyInstaller 可以將 Python 專案打包成可執行檔，方便在沒有 Python 環境的機器上直接執行。
+PyInstaller 可以將 Python 專案打包成可執行檔，方便在沒有 Python 環境的機器上直接執行。  
 
-### Command
+### Basic Command
 
-將 `main.py` 打包成可執行檔的基本指令
+#### 將 `{ENTRY_FILE}.py` 打包成可執行檔的基本指令
 ```sh
-pyinstaller main.py
+pyinstaller {ENTRY_FILE}.py
+```
+
+#### 設定打包後的檔案名稱為 `{EXECUTABLE_FILE_NAME}`
+```sh
+pyinstaller -n {EXECUTABLE_FILE_NAME} {ENTRY_FILE}.py
 ```
 
 ### Issues and Solutions
@@ -35,8 +39,16 @@ pyinstaller main.py
 - **檔案路徑問題**  
    打包後的程式在運行時，會暫時解壓至 `/tmp` 資料夾，而外部掛載的設定檔掛載於`/app`，因此必須根據執行環境（`/tmp` 或 `/app`）調整路徑`BASE_DIR` 變數來設定正確的目錄位置。
 
+### Custom Command
+
+結合上面，我們使用的指令如下，會於之後的步驟中放入 Dockerfile  
+```bash
+pyinstaller --onefile -n {EXECUTABLE_FILE_NAME} --collect-all {MODULE} {ENTRY_FILE}.py
+```
 
 ## Steps
+
+實作步驟分為 4 步。
 
 ### 1. Adjust Code
 

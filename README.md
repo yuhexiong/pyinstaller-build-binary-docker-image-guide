@@ -2,9 +2,7 @@
 
 **(also provided Traditional Chinese version document [README-CH.md](README-CH.md).)**
 
-Adjust code to accommodate both local running and PyInstaller build environments.  
-Building a Docker Image with PyInstaller as a Binary including all required packages and launch it using Docker Compose with mounted configuration files.  
-
+Use PyInstaller to package the project into a binary file to build a Docker image, including all required dependencies, and use Docker Compose to start it while mounting configuration files.  
 
 
 ## Overview
@@ -17,11 +15,17 @@ Building a Docker Image with PyInstaller as a Binary including all required pack
 refer to [PyInstaller Official Manual](https://pyinstaller.org/en/stable/)  
 PyInstaller can package Python projects into executable files, making them easier to run on machines without a Python environment.
 
-### Command
 
-basic command to package `main.py` as an executable file:
+### Basic Command
+
+#### Basic command to package `{ENTRY_FILE}.py` as an executable file
 ```sh
-pyinstaller main.py
+pyinstaller {ENTRY_FILE}.py
+```
+
+#### Set the name of the packaged executable file as `{EXECUTABLE_FILE_NAME}`
+```sh
+pyinstaller -n {EXECUTABLE_FILE_NAME} {ENTRY_FILE}.py
 ```
 
 ### Issues and Solutions
@@ -38,7 +42,18 @@ pyinstaller main.py
 - **File path issues**  
    After packaging, the program runs temporarily in the `/tmp` folder, while external configuration files are mounted in `/app`. Therefore, the directory path must be adjusted based on the execution environment (`/tmp` or `/app`). Use a `BASE_DIR` variable to set the correct directory location.
 
+### Custom Command
+
+Combine with the above, the command we used is as follows, and it will be included in the Dockerfile in the subsequent steps.  
+
+```bash
+pyinstaller --onefile -n {EXECUTABLE_FILE_NAME} --collect-all {MODULE} {ENTRY_FILE}.py
+```
+
+
 ## Steps
+
+The implementation steps are divided into 4 stages.  
 
 ### 1. Adjust Code
 
