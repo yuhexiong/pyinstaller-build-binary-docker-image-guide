@@ -96,21 +96,27 @@ also, modify the folder paths in the code so that the YAML paths use `BASE_DIR` 
 
 write the required modules into `requirements.txt`  
 
-if using .venv
+If using .venv, you can either export the modules to a `requirements.txt` file using a command, or skip this step and directly use `DockerfilePoetry` in the next step.  
 ```bash
 pip freeze > requirements.txt
 ```
 
 ### 3. Dockerfile
 
+**(1) using `requirements.txt`**  
+
 refer to [Dockerfile](Dockerfile)  
+
+**(2) using `poetry`**  
+
+refer to [DockerfilePoetry](DockerfilePoetry)  
 
 In the Dockerfile, you need to modify `{EXECUTABLE_FILE_NAME}` to the desired filename, `{MODULE}` to the packages that need to be included, and `{ENTRY_FILE}` to the project entry point, which is usually manage.py or main.py and modify command to run python.  
 
 Detailed Implementation Steps:  
 - Install the required dependencies and libraries (please adjust as needed).
 - Copy the code into the image.
-- Install modules according to `requirements.txt`.
+- Install modules according to `requirements.txt` or poetry install.  
 - Install PyInstaller, build it into a single file, which will be automatically generated in the /dist folder.
 - Use the new image and only copy the executable from the `/dist` folder to reduce the image size.
 

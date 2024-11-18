@@ -5,7 +5,7 @@
 
 ## Overview
 
-- Language: Python v3.9
+- Language: Python v3.12
 - Tool: PyInstaller v6.11.0
 
 ## PyInstaller Introduction
@@ -91,21 +91,27 @@ DATA_DIR = get_data_folder()
 
 將所需的套件寫入 `requirements.txt`  
 
-如果你使用 .venv：
+如果你使用 .venv，可以選擇以指令將 module 導出成 `requirements.txt`，或不處理但在下一個步驟時直接使用 `DockerfilePoetry`  
 ```bash
 pip freeze > requirements.txt
 ```
 
 ### 3. Dockerfile
 
+**(1) 使用 `requirements.txt`**  
+
 參考 [Dockerfile](Dockerfile)  
+
+**(2) 使用 `poetry`**  
+
+參考 [DockerfilePoetry](DockerfilePoetry)  
 
 在 Dockerfile 中，你需要將 `{EXECUTABLE_FILE_NAME}` 修改為所需的檔名，將 `{MODULE}` 修改為需要包含的套件，將 `{ENTRY_FILE}` 修改為專案的入口檔案，通常是 manage.py 或 main.py，並修改運行 Python的指令。  
 
 詳細實作步驟：  
 - 安裝所需的依賴和函式庫（請根據需要進行調整）。
 - 將程式碼複製到 image 內。
-- 根據 `requirements.txt` 安裝套件。
+- 根據 `requirements.txt` 安裝套件或 poetry install。
 - 安裝 PyInstaller，將其建置成一個檔案，該檔案將自動生成在 /dist 資料夾下。
 - 使用新的 image，只複製 /dist 資料夾中的執行檔，以減少 image 大小。
 
